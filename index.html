@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math</title>
+  <style>
+    input{
+  width : 4em;
+  height: 2rem;
+  font-size: 22px
+}
+button {
+  display: block;
+  margin-top: 1em;
+  padding: .5em 2em;
+}
+  </style>
+</head>
+<body>
+  <input type="text" name="n1" disabled> X 
+  <input type="text" name="n2" disabled> = 
+  <input type="number" name="res" min="0">
+  <br>
+  <p id="alert"></p>
+  <button id="check">check</button>
+  <button id="new">neu</button>
+
+  <script>
+    let alertEl = document.querySelector('#alert');
+let resEl = document.querySelector('input[name="res"]');
+let n1El = document.querySelector('input[name="n1"]');
+let n2El = document.querySelector('input[name="n2"]');
+let n1 , n2, res;
+
+function loadNums(){
+  n1 = Math.floor((Math.random() * 8) + 2);
+  n2 = Math.floor((Math.random() * 9) + 11);
+  res = n1 * n2;
+  n1El.value = n1;
+  n2El.value = n2;
+  resEl.value = "";
+  resEl.focus();
+}
+
+loadNums();
+
+document.querySelector('#new').addEventListener('click', loadNums);
+
+document.querySelector('#check').addEventListener('click', ()=>{
+  let a = Number(resEl.value);
+  if(isNaN(a) || a != res)
+    alertEl.textContent = 'Falsch';
+  if(a == res)
+    alertEl.textContent = 'Richtig';
+});
+  </script>
+</body>
+</html>
