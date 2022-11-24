@@ -6,16 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Math</title>
   <style>
+    body{
+      padding: 2rem 20px 0;
+      max-width: 400px;
+      margin: 0 auto;
+      font-family: Arial, Helvetica, sans-serif;
+    }
     input{
   width : 4em;
   height: 2rem;
   font-size: 22px
 }
 button {
-  display: block;
+  display: inline-block;
   margin-top: 1em;
   padding: .5em 2em;
 }
+#alert { padding: 10px 30px; }
+.right { background-color: aquamarine; }
+.wrong { background-color: thistle; }
   </style>
 </head>
 <body>
@@ -35,6 +44,8 @@ let n2El = document.querySelector('input[name="n2"]');
 let n1 , n2, res;
 
 function loadNums(){
+  alertEl.textContent = '';
+  alertEl.setAttribute('class', '');
   n1 = Math.floor((Math.random() * 8) + 2);
   n2 = Math.floor((Math.random() * 9) + 11);
   res = n1 * n2;
@@ -50,10 +61,13 @@ document.querySelector('#new').addEventListener('click', loadNums);
 
 document.querySelector('#check').addEventListener('click', ()=>{
   let a = Number(resEl.value);
-  if(isNaN(a) || a != res)
+  if(isNaN(a) || a != res){
     alertEl.textContent = 'Falsch';
+    alertEl.classList.add('wrong');
+  }
   if(a == res)
-    alertEl.textContent = 'Richtig';
+  alertEl.textContent = 'Richtig';
+  alertEl.classList.add('right');
 });
   </script>
 </body>
