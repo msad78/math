@@ -8,6 +8,7 @@
   <style>
     body{
       padding: 2rem 20px 0;
+      font-size: 20px;
       max-width: 400px;
       margin: 0 auto;
       font-family: Arial, Helvetica, sans-serif;
@@ -18,13 +19,15 @@
   font-size: 22px
 }
 button {
+  font-size: 1em;
   display: inline-block;
   margin-top: 1em;
   padding: .5em 2em;
 }
 #alert { padding: 10px 30px; }
-.right { background-color: aquamarine; }
-.wrong { background-color: thistle; }
+.Richtig { background-color: #c6ffcb; }
+.Falsch { background-color: #ffced2; }
+#questions li { margin: 15px 0; padding: 5px;}
   </style>
 </head>
 <body>
@@ -35,19 +38,26 @@ button {
   <p id="alert"></p>
   <button id="check">check</button>
   <button id="new">neu</button>
-
+  <ul id="questions"></ul>
   <script>
+    let questionsEl = document.querySelector('#questions');
     let alertEl = document.querySelector('#alert');
-let resEl = document.querySelector('input[name="res"]');
-let n1El = document.querySelector('input[name="n1"]');
-let n2El = document.querySelector('input[name="n2"]');
-let n1 , n2, res;
+    let resEl = document.querySelector('input[name="res"]');
+    let n1El = document.querySelector('input[name="n1"]');
+    let n2El = document.querySelector('input[name="n2"]');
+    let n1 , n2, res;
+    let questions = [];
 
+function hsh(n1,n2){
+  return n1.toString() + '_' + n2.toString();
+}
 function loadNums(){
   alertEl.textContent = '';
   alertEl.setAttribute('class', '');
-  n1 = Math.floor((Math.random() * 8) + 2);
-  n2 = Math.floor((Math.random() * 9) + 11);
+  do {
+    n1 = Math.floor((Math.random() * 8) + 2);
+    n2 = Math.floor((Math.random() * 9) + 11);
+  } while (questions.indexOf(hsh(n1,n2))>=0);
   res = n1 * n2;
   n1El.value = n1;
   n2El.value = n2;
@@ -60,14 +70,23 @@ loadNums();
 document.querySelector('#new').addEventListener('click', loadNums);
 
 document.querySelector('#check').addEventListener('click', ()=>{
+  if(questions.indexOf(hsh(n1,n2))<0)
+    questions.push(hsh(n1,n2));
+  else
+    return;
+
   let a = Number(resEl.value);
+  let answer;
+
   if(isNaN(a) || a != res){
-    alertEl.textContent = 'Falsch';
-    alertEl.classList.add('wrong');
+    answer = 'Falsch';
   }
-  if(a == res)
-  alertEl.textContent = 'Richtig';
-  alertEl.classList.add('right');
+  if(a == res){
+    answer = 'Richtig';
+  }
+  alertEl.classList.add(answer);
+  alertEl.textContent = answer;
+  questionsEl.innerHTML += `<li class="${answer}">${n1} x ${n2} = ${res} - war ${answer}</li>`;
 });
   </script>
 </body>
